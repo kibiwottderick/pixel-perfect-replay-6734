@@ -15,7 +15,7 @@ export function periodIndices({ year, term }: Period): number[] {
 }
 
 export function previousPeriod(p: Period): Period | null {
-  const minYear = TERMS[0].year;
+  const minYear = TERMS[0]?.year ?? 2024;
   if (p.term === "all") return p.year - 1 >= minYear ? { year: p.year - 1, term: "all" } : null;
   if (p.term > 1) return { year: p.year, term: (p.term - 1) as 1 | 2 };
   return p.year - 1 >= minYear ? { year: p.year - 1, term: 3 } : null;
@@ -28,7 +28,7 @@ export function periodLabel(p: Period): string {
 export function scoreIn(series: number[], p: Period): number | null {
   const idx = periodIndices(p);
   if (idx.length === 0) return null;
-  return mean(idx.map((i) => series[i]));
+  return mean(idx.map((i) => series[i] ?? 0));
 }
 
 export function pctChange(curr: number | null, prev: number | null): number | null {
@@ -54,5 +54,5 @@ export function snapshot(subjects: SubjectRecord[], p: Period): SubjectSnapshot[
 }
 
 export function averageSeries(subjects: SubjectRecord[], key: "scores" | "cohort"): number[] {
-  return TERMS.map((_, i) => mean(subjects.map((s) => s[key][i])));
+  return TERMS.map((_, i) => mean(subjects.map((s) => s[key][i] ?? 0)));
 }

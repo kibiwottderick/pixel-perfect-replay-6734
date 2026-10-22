@@ -46,7 +46,7 @@ export const LEVELS: readonly Level[] = [
 
 export function scoreToLevel(score: number): Level {
   const s = Math.max(0, Math.min(100, Math.round(score)));
-  return LEVELS.find((l) => s >= l.min) ?? LEVELS[LEVELS.length - 1];
+  return LEVELS.find((l) => s >= l.min) ?? (LEVELS[LEVELS.length - 1] as Level);
 }
 
 export function levelToPoints(code: LevelCode): number {
